@@ -134,6 +134,13 @@ defmodule Commanded.ProcessManagers.ProcessManagerInstance do
 
     {:stop, :normal, state}
   end
+  
+  @doc false
+  def handle_info({:gun_down, _, :http, :normal, _, []}, state) do
+    Logger.debug(fn -> describe(state) <> " stopping due to inactivity timeout" end)
+
+    {:noreply, state}
+  end
 
   defp event_already_seen?(%RecordedEvent{}, %State{last_seen_event: nil}),
     do: false
